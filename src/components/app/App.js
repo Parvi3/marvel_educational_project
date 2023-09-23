@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { useState } from "react";
 import AppHeader from "../appHeader/AppHeader";
 import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
@@ -7,42 +7,38 @@ import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 
 import decoration from '../../resources/img/vision.png';
 
-class App extends Component {
+const App = () => {
 
-    state = {
-        selectedChar: null
+    const [selectedChar, setChar] = useState(null);
+
+    const onCharSelected = (id) => {
+        setChar(id);
     }
 
-    onCharSelected = (id) => {
-        this.setState({
-            selectedChar: id
-        })
-    }
 
-    render() {
-        return (
-            <div className="app">
-                <AppHeader />
-                <main>
+    return (
+        <div className="app">
+            <AppHeader />
+            <main>
+                <ErrorBoundary>
+                    <RandomChar />
+                </ErrorBoundary>
+                <div className="char__content">
+                    {/* В этот компонент приходит Id персонажа и передается в state: selectedChar */}
                     <ErrorBoundary>
-                        <RandomChar />
+                        <CharList propOnCharSelected={onCharSelected} />
                     </ErrorBoundary>
-                    <div className="char__content">
-                        {/* В этот компонент приходит Id персонажа и передается в state: selectedChar */}
-                        <ErrorBoundary>
-                            <CharList propOnCharSelected={this.onCharSelected} />
-                        </ErrorBoundary>
-                        {/* В этот компонент уже передается пришедший Id в state из onCharSelected  из компонента CharList */}
-                        {/* <CharInfo propCharId={this.state.selectedChar} /> */}
-                        <ErrorBoundary>
-                            <CharInfo propCharId={this.state.selectedChar} />
-                        </ErrorBoundary>
-                    </div>
-                    <img className="bg-decoration" src={decoration} alt="vision" />
-                </main>
-            </div>
-        )
-    }
+                    {/* В этот компонент уже передается пришедший Id в state из onCharSelected  из компонента CharList */}
+                    {/* <CharInfo propCharId={this.state.selectedChar} /> */}
+                    <ErrorBoundary>
+                        <CharInfo propCharId={selectedChar} />
+                    </ErrorBoundary>
+                </div>
+                <img className="bg-decoration" src={decoration} alt="vision" />
+            </main>
+        </div>
+    )
+
 }
 
 export default App;
