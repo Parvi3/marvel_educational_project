@@ -24,12 +24,9 @@ const App = () => {
                     <RandomChar />
                 </ErrorBoundary>
                 <div className="char__content">
-                    {/* В этот компонент приходит Id персонажа и передается в state: selectedChar */}
                     <ErrorBoundary>
                         <CharList propOnCharSelected={onCharSelected} />
                     </ErrorBoundary>
-                    {/* В этот компонент уже передается пришедший Id в state из onCharSelected  из компонента CharList */}
-                    {/* <CharInfo propCharId={this.state.selectedChar} /> */}
                     <ErrorBoundary>
                         <CharInfo propCharId={selectedChar} />
                     </ErrorBoundary>
