@@ -4,7 +4,7 @@ const useMarvelService = () => {
 
     const { loading, request, error, clearError } = useHttp();
 
-    // для более чистого кода присвоил часть ссылки переменной
+    // для более чистого кода
     const _apiBase = 'https://gateway.marvel.com:443/v1/public/';
     const _apiKey = 'apikey=1d308d1bbc779800b5c09e8defb48565';
     const _baseOffset = 210;
