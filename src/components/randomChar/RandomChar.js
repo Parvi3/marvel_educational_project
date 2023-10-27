@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage';
 import useMarvelService from '../../service/MarvelService';
+import setContent from '../../utils/setContent';
 
 import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
@@ -11,7 +10,7 @@ const RandomChar = () => {
     const [char, setChar] = useState({});
 
     // для создания нового запроса
-    const { loading, error, clearError, getCharacter } = useMarvelService();
+    const { clearError, getCharacter, process, setProcess } = useMarvelService();
 
     useEffect(() => {
         updateChar();
@@ -33,21 +32,14 @@ const RandomChar = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
         getCharacter(id)
             .then(onCharLoaded)
+            .then(() => setProcess('confirmed'))
         // this.marvelService.getAllCharacters().then(res => console.log(res))
         // this.marvelService.getCharacter(id).then(res => { this.setState(res) })
     }
 
-    const spinner = loading ? <Spinner /> : null; // если загрузка еще идет, то показывает спиннер
-    const errorMessage = error ? <ErrorMessage /> : null; // показывает гифку, если error правда
-    const content = !(loading || error) ? <View char={char} /> : null; // показывает контент если всё верно
-
     return (
         <div className="randomchar">
-
-            {spinner}
-            {errorMessage}
-            {content}
-
+            {setContent(process, View, char)}
             <div className="randomchar__static">
                 <p className="randomchar__title">
                     Random character for today!<br />
@@ -67,9 +59,9 @@ const RandomChar = () => {
 
 
 // для более чистого кода и читаемости блок с описанием персонажа был вынесен
-const View = ({ char }) => {
+const View = ({ data }) => {
 
-    const { thumbnail, name, description, homepage, wiki } = char;
+    const { thumbnail, name, description, homepage, wiki } = data;
 
     // данный участок кода нужен когда нет у персонажа фотки, чтобы в дефольтной фотке текст выровнять 
     let imgStyle = { 'objectFit': 'cover' };
