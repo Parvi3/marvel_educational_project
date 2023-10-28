@@ -23,8 +23,8 @@ const useMarvelService = () => {
     // функция возвращает одного персонажа по имени
     const getCharacterByName = async (name) => {
         const res = await request(`${_apiBase}characters?name=${name}&${_apiKey}`);
-        return res.data.results.map(_transformCharacter);
-    };
+        return res.data.results.map(_transformCharacter)
+    }
 
     const getAllComics = async (offset = 0) => {
         const res = await request(

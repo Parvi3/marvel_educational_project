@@ -6,13 +6,14 @@ import AppBanner from '../appBanner/AppBanner';
 import setContent from '../../utils/setContent';
 
 const SinglePage = ({ Component, dataType }) => {
-    const { id } = useParams();
+    const { comicId } = useParams();
     const [data, setData] = useState(null);
     const { getComic, getCharacter, clearError, process, setProcess } = useMarvelService();
 
     useEffect(() => {
         updateData()
-    }, [id])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [comicId])
 
     const updateData = () => {
         clearError();
@@ -20,10 +21,12 @@ const SinglePage = ({ Component, dataType }) => {
         // eslint-disable-next-line default-case
         switch (dataType) {
             case 'comic':
-                getComic(id).then(onDataLoaded).then(() => setProcess('confirmed'));
+                getComic(comicId).then(onDataLoaded).then(() => setProcess('confirmed'));
                 break;
             case 'character':
-                getCharacter(id).then(onDataLoaded).then(() => setProcess('confirmed'));
+                getCharacter(comicId).then(onDataLoaded).then(() => setProcess('confirmed'));
+                break;
+            default: console.log("What's wrong...");
         }
     }
 
